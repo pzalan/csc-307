@@ -29,14 +29,25 @@ const users = {
 
 };
 
+const findUserByName = (name) => { //this will let us getting a user by their name and use the query argument in the root users to get it 
+  return users["users_list"].filter(
+    (user) => user["name"] === name );};
+
+
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (req, res) => { // root 
   res.send("Hello World!"); });
 
-app.get("/users", (req, res) => {
-  res.send(users); });
+app.get("/users", (req, res) => { // root users, find user by name and if not it will print out an empty list 
+  const name = req.query.name;
+  if (name != undefined) {
+    let result = findUserByName(name);
+    result = { users_list: result };
+    res.send(result);
+  }else{
+   res.send(users);}  });
 
-app.listen(port, () => {
+app.listen(port, () => { 
   console.log(
     'Example app listening at http://localhost:${port}' ); });
