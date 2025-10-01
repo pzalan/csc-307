@@ -46,7 +46,7 @@ app.get("/users/:id", (req, res) => { // root users, find user by id and if not 
   const id = req.params["id"];
   let result = findUserById(id);
   if (result === undefined) {
-    res.status(404).send("Rsource not found.");
+    res.status(404).send("Resource not found.");
   }else{
    res.send(result);}  });
 
