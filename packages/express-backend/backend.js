@@ -33,20 +33,22 @@ const findUserByName = (name) => { //this will let us getting a user by their na
   return users["users_list"].filter(
     (user) => user["name"] === name );};
 
+const findUserById = (id) => //will let find a user by id num 
+  users["users_list"].find((user) => user["id"] === id);
+
 
 app.use(express.json());
 
 app.get("/", (req, res) => { // root 
   res.send("Hello World!"); });
 
-app.get("/users", (req, res) => { // root users, find user by name and if not it will print out an empty list 
-  const name = req.query.name;
-  if (name != undefined) {
-    let result = findUserByName(name);
-    result = { users_list: result };
-    res.send(result);
+app.get("/users/:id", (req, res) => { // root users, find user by id and if not it will print out an empty list 
+  const id = req.params["id"];
+  let result = findUserById(id);
+  if (result === undefined) {
+    res.status(404).send("Rsource not found.");
   }else{
-   res.send(users);}  });
+   res.send(result);}  });
 
 app.listen(port, () => { 
   console.log(
