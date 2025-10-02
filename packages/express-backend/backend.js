@@ -36,8 +36,21 @@ const findUserByName = (name) => { //this will let us getting a user by their na
 const findUserById = (id) => //will let find a user by id num 
   users["users_list"].find((user) => user["id"] === id);
 
+const addUser = (user) => { //this will add a user 
+  users["users_list"].push(user);
+  return user; };
 
 app.use(express.json());
+
+app.get("/users", (req, res) => {
+  const name = req.query.name;
+  if (name != undefined) {
+    let result = findUserByName(name);
+    result = { users_list: result };
+    res.send(result);
+  } else {
+    res.send(users);
+  } });
 
 app.get("/", (req, res) => { // root 
   res.send("Hello World!"); });
@@ -49,6 +62,11 @@ app.get("/users/:id", (req, res) => { // root users, find user by id and if not 
     res.status(404).send("Resource not found.");
   }else{
    res.send(result);}  });
+
+app.post("/users", (req, res) => { //this will port the user being added to the list of users 
+  const userToAdd = req.body;
+  addUser(userToAdd);
+  res.send(); });
 
 app.listen(port, () => { 
   console.log(
