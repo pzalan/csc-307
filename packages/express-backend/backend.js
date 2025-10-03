@@ -29,9 +29,9 @@ const users = {
 
 };
 
-const findUserByName = (name) => { //this will let us getting a user by their name and use the query argument in the root users to get it 
+const findUserByNameAndJob = (name,job) => { //this will let us getting a user by their name and job by use the query argument in the root users to get it 
   return users["users_list"].filter(
-    (user) => user["name"] === name );};
+    (user) => user["name"] === name && user["job"] == job );};
 
 const findUserById = (id) => //will let find a user by id num 
   users["users_list"].find((user) => user["id"] === id);
@@ -40,12 +40,21 @@ const addUser = (user) => { //this will add a user
   users["users_list"].push(user);
   return user; };
 
+const removeUserbyId = (id) =>{ //will remove a user by id 
+  const index = user["user_list"].findIndex( user => user["id"] === id);
+    if(index != -1){ //it element passes test then it won't be a negative num
+ 	users["user_list"].splice(index, 1); //then it will remove user with splice 
+	return true; }
+    return false;}; // else if its a negative number then it will return false 
+
 app.use(express.json());
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
-  if (name != undefined) {
-    let result = findUserByName(name);
+  const job = req.query.job;
+
+  if (name != undefined && job != undefined) {
+    let result = findUserByNameAndJob(name,job);
     result = { users_list: result };
     res.send(result);
   } else {
