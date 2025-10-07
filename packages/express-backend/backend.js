@@ -41,7 +41,7 @@ const addUser = (user) => { //this will add a user
   return user; };
 
 const removeUserbyId = (id) =>{ //will remove a user by id 
-  const index = user["user_list"].findIndex( user => user["id"] === id);
+  const index = users["user_list"].findIndex( user => user["id"] === id);
     if(index != -1){ //it element passes test then it won't be a negative num
  	users["user_list"].splice(index, 1); //then it will remove user with splice 
 	return true; }
@@ -76,6 +76,16 @@ app.post("/users", (req, res) => { //this will port the user being added to the 
   const userToAdd = req.body;
   addUser(userToAdd);
   res.send(); });
+
+app.delete("/users/:id", (req,res) => { //will delete a user by their id
+  const id = req.params["id"];
+  const wasRemoved = removeUserbyId(id);
+
+  if(wasRemoved){
+    res.status(204).send();
+  } else{
+    res.status(404).send("User not found."); }
+});
 
 app.listen(port, () => { 
   console.log(
