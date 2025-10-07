@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000
@@ -46,6 +47,8 @@ const removeUserbyId = (id) =>{ //will remove a user by id
  	users["user_list"].splice(index, 1); //then it will remove user with splice 
 	return true; }
     return false;}; // else if its a negative number then it will return false 
+
+app.use(cors()); //allows our backend to respond to calls from a different origin 
 
 app.use(express.json());
 
