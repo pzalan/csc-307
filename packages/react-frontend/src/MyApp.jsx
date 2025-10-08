@@ -5,12 +5,11 @@ import Form from "./Form";
 function MyApp() {
    const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter(index){
-    const characterToRemove = characters[index];
-    removeUserUsingId(characterToRemove.id) //calls function and waits until successful
+  function removeOneCharacter(id){
+    removerUserUsingId(id) //calls function and waits until successful
 	.then(() => {
-	    const updated = characters.filter((character,i) => { //updates the local state
-     	         return i !== index; });
+	    const updated = characters.filter((character) => { //updates the local state
+     	         return character.id !== id; });
             setCharacters(updated);
   });
 }
