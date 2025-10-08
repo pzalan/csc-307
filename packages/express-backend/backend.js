@@ -42,9 +42,9 @@ const addUser = (user) => { //this will add a user
   return user; };
 
 const removeUserbyId = (id) =>{ //will remove a user by id 
-  const index = users["user_list"].findIndex( user => user["id"] === id);
+  const index = users["users_list"].findIndex( user => user["id"] === id);
     if(index != -1){ //it element passes test then it won't be a negative num
- 	users["user_list"].splice(index, 1); //then it will remove user with splice 
+ 	users["users_list"].splice(index, 1); //then it will remove user with splice 
 	return true; }
     return false;}; // else if its a negative number then it will return false 
 

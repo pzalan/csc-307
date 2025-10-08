@@ -6,17 +6,37 @@ function MyApp() {
    const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index){
-    const updated = characters.filter((character, i) => {
-      return i !== index; });
-    setCharacters(updated);
-  }
+    const characterToRemove = characters[index];
+    removeUserUsingId(characterToRemove.id) //calls function and waits until successful
+	.then(() => {
+	    const updated = characters.filter((character,i) => { //updates the local state
+     	         return i !== index; });
+            setCharacters(updated);
+  });
+}
   
   function updateList(person){ // will update the list only if our POST call is successful 
      postUser(person) 
-        .then(() =>  setCharacters([...characters, person]))
+        .then((UserWithId) =>{ //UserWithId will have the object from back 
+	     setCharacters([...characters, UserWithId]);} )
 	.catch((error) => {
-	  console.log(error); })
+	  console.log(error); });
 } 
+  
+  function removerUserUsingId(id) {
+      const url = `http://localhost:8000/users/${id}`; // a template literal for the url with id
+      return fetch(url, {
+	  method: "DELETE", //the http method we are going to use 
+      })
+      .then(response => {
+	  if(response.status === 204){
+	     return response; // will return response object if successful
+      }
+	  if(response.status === 404){ // will check for any error status 
+		throw new Error("User not found");
+      }
+});
+}
 
   function fetchUsers(){ //this will make the GET request from the backend  
 	const promise = fetch("http://localhost:8000/users");
@@ -30,7 +50,7 @@ function MyApp() {
  }, []); //only called when the Myapp component passes an empty array as the second arg to useEffect
   
   function postUser(person) { // this will return the promise with the full json object that contains the Id as well 
-     return fetch("Http://localhost:8000/users", {
+     return fetch("http://localhost:8000/users", {
       method: "POST", //makes it a POST instead of the default GET 
       headers: {
         "Content-Type": "application/json",
