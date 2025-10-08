@@ -48,6 +48,10 @@ const removeUserbyId = (id) =>{ //will remove a user by id
 	return true; }
     return false;}; // else if its a negative number then it will return false 
 
+const generateRandomId = () => { // this will generate a random id for the user, using toSting to convert num to string and substring to get rid of decimal 
+   return Math.random().toString(36).substring(2,8);
+};
+
 app.use(cors()); //allows our backend to respond to calls from a different origin 
 
 app.use(express.json());
@@ -77,8 +81,9 @@ app.get("/users/:id", (req, res) => { // root users, find user by id and if not 
 
 app.post("/users", (req, res) => { //this will port the user being added to the list of users 
   const userToAdd = req.body;
+  userToAdd.id = generateRandomId(); //generates an Id and puts it into the object that is missing it 
   addUser(userToAdd);
-  res.send(); });
+  res.status(201).send(userToAdd); });//will update the state in the frontend if status 201 comes up 
 
 app.delete("/users/:id", (req,res) => { //will delete a user by their id
   const id = req.params["id"];

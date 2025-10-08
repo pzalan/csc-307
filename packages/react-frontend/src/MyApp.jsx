@@ -29,16 +29,20 @@ function MyApp() {
 	    .catch((error) => { console.log(error); });
  }, []); //only called when the Myapp component passes an empty array as the second arg to useEffect
   
-  function postUser(person) { // this will make a post req and return the res 
-    const promise = fetch("Http://localhost:8000/users", {
+  function postUser(person) { // this will return the promise with the full json object that contains the Id as well 
+     return fetch("Http://localhost:8000/users", {
       method: "POST", //makes it a POST instead of the default GET 
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(person), //converts the in memory object to a string 
-    });
-
-    return promise; }
+    })
+    .then(response => {
+	if(response.status === 201){
+	   return response.json(); }
+	else{
+	    throw new Error("failed"); } }); 	
+  }
 
   return(
     <div className="container">
