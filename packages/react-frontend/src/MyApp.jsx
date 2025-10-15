@@ -5,11 +5,11 @@ import Form from "./Form";
 function MyApp() {
    const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter(id){
-    removerUserUsingId(id) //calls function and waits until successful
+  function removeOneCharacter(_id){ //changed the logic to work with ids
+    removerUserUsingId(_id) //calls function and waits until successful
 	.then(() => {
 	    const updated = characters.filter((character) => { //updates the local state
-     	         return character.id !== id; });
+     	         return character._id !== _id; });
             setCharacters(updated);
   });
 }
@@ -22,8 +22,8 @@ function MyApp() {
 	  console.log(error); });
 } 
   
-  function removerUserUsingId(id) {
-      const url = `http://localhost:8000/users/${id}`; // a template literal for the url with id
+  function removerUserUsingId(_id) {
+      const url = `http://localhost:8000/users/${_id}`; // a template literal for the url with id
       return fetch(url, {
 	  method: "DELETE", //the http method we are going to use 
       })
