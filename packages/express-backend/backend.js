@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-impport userServices from "./user-services.js";
+import userServices from "./user-services.js";
 
 const app = express();
 const port = 8000
@@ -34,9 +34,9 @@ app.get("/users/:id", (req, res) => { // root users, find user by id and if not 
   
   userServices.findUserById(id) 
     .then((result) => {
-       if (result === null) // if the id is not found 
+       if (result === null){ // if the id is not found 
           res.status(404);
-       } else {
+       }else{
           res.send(result);
        }
     })
